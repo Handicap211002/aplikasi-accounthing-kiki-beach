@@ -1,103 +1,154 @@
-import Image from "next/image";
+  'use client';
 
-export default function Home() {
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabaseClient';
+import { ArrowLeft } from 'lucide-react';
+
+export default function LoginPage() {
+  const router = useRouter();
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const [showNameModal, setShowNameModal] = useState(false);
+  const [newFullName, setNewFullName] = useState('');
+  const [userIdToUpdate, setUserIdToUpdate] = useState<string | null>(null);
+
+  // ✅ Cek session aktif saat komponen dimount
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session?.user) {
+        const fullName = session.user.user_metadata?.full_name;
+        if (fullName) {
+          router.replace('/dashboard');
+        } else {
+          setUserIdToUpdate(session.user.id);
+          setShowNameModal(true);
+        }
+      }
+    };
+
+    checkSession();
+  }, [router]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email: form.email,
+        password: form.password,
+      });
+
+      if (signInError || !data.session) throw new Error('Email atau password salah');
+
+      const user = data.user;
+
+      if (!user.user_metadata?.full_name) {
+        setUserIdToUpdate(user.id);
+        setShowNameModal(true);
+      } else {
+        router.push('/dashboard');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Terjadi kesalahan saat login');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSaveName = async () => {
+    if (!newFullName.trim()) return;
+
+    const { error: updateError } = await supabase.auth.updateUser({
+      data: { full_name: newFullName.trim() },
+    });
+
+    if (updateError) {
+      alert('Gagal menyimpan nama kasir');
+    } else {
+      router.push('/dashboard');
+    }
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div
+      className="min-h-screen bg-cover bg-center flex items-center justify-center px-4"
+      style={{ backgroundImage: "url('/bg.png')" }}
+    >
+      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm relative">
+        <button
+          onClick={() => router.push('/menu')}
+          className="absolute top-4 left-4 text-blue-900 hover:text-blue-700 flex items-center space-x-1"
+        >
+          <ArrowLeft size={18} />
+          <span>Kembali</span>
+        </button>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        <div className="text-center mb-1">
+          <img src="/logo.png" alt="Kiki Beach Logo" className="mx-auto w-72" />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            onChange={handleChange}
+            className="w-full mb-4 p-2 border border-blue-900 text-blue-900 placeholder-blue-900 rounded"
+            required
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+            className="w-full mb-4 p-2 border border-blue-900 text-blue-900 placeholder-blue-900 rounded"
+            required
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full border border-blue-900 text-blue-900 py-2 rounded hover:bg-blue-900 hover:text-white transition duration-200"
+          >
+            {loading ? 'Loading...' : 'Login'}
+          </button>
+        </form>
+      </div>
+
+      {showNameModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm">
+            <h2 className="text-lg font-semibold mb-4 text-blue-900">Masukkan Nama Kasir</h2>
+            <input
+              type="text"
+              value={newFullName}
+              onChange={(e) => setNewFullName(e.target.value)}
+              placeholder="Contoh: Kasir Ayu"
+              className="w-full mb-4 p-2 border border-blue-900 text-blue-900 rounded"
+            />
+            <button
+              onClick={handleSaveName}
+              className="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-800 transition duration-200"
+            >
+              Simpan & Masuk
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
