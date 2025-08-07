@@ -2,6 +2,7 @@
 
 import { FC } from 'react';
 import { FaHome, FaMoneyBill, FaChartBar, FaSignOutAlt } from 'react-icons/fa';
+import Link from 'next/link';
 
 interface SidebarProps {
   onLogout: () => void;
@@ -18,18 +19,18 @@ const Sidebar: FC<SidebarProps> = ({ onLogout, isOpen }) => {
       <div className="p-6 space-y-6">
         <h1 className="text-2xl font-bold mb-6">Accounting</h1>
         <nav className="space-y-4">
-          <a href="#" className="flex items-center gap-3 hover:text-blue-300">
+          <Link href="/dashboard" className="flex items-center gap-3 hover:text-blue-300">
             <FaHome />
             Dashboard
-          </a>
-          <a href="#" className="flex items-center gap-3 hover:text-blue-300">
+          </Link>
+          <Link href="/dashboard/transaksi" className="flex items-center gap-3 hover:text-blue-300">
             <FaMoneyBill />
             Transaksi
-          </a>
-          <a href="#" className="flex items-center gap-3 hover:text-blue-300">
+          </Link>
+          <Link href="/dashboard/laporan" className="flex items-center gap-3 hover:text-blue-300">
             <FaChartBar />
             Laporan
-          </a>
+          </Link>
         </nav>
       </div>
       <div className="p-6 mt-auto">

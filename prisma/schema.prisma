@@ -1,9 +1,57 @@
-generator client {
-  provider = "prisma-client-js"
-}
+  generator client {
+    provider = "prisma-client-js"
+  }
 
-datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
-}
+  datasource db {
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
+  }
+
+  enum Category {
+    ROOM_REVENUE
+    FB_REVENUE
+    ACTIVITY_REVENUE
+  }
+
+  model Transaction {
+    id               Int       @id @default(autoincrement())
+    date             DateTime  
+    category         Category 
+    // ROOM REVENUE Fields
+    roomSold         Int?      // ROOM SOLD
+    personPaxRoom    Int?      // PERSON/PAX ROOM
+    roomRevenue      Decimal?  // ROOM REVENUE (Nominal)
+    extraBed         Decimal?  // EXTRA BED
+    addPerson        Decimal?  // ADD PERSON
+    otherRoom        Decimal?  // OTHER
+    taxi             Decimal?  // TAXI
+    boatRental       Decimal?  // BOAT RENTAL
+    ticketBtmSg      Decimal?  // TICKET BTM-SG
+
+    // F&B REVENUE Fields
+    beverage         Decimal?  // BEVERAGE
+    seaPantry        Decimal?  // SEA PANTRY
+    breakfast        Decimal?  // BREAKFAST
+    addBreakfast     Decimal?  // ADD B'FAST
+    otherFb          Decimal?  // OTHER (F&B)
+    discount         Decimal?  // DISCOUNT
+    totalFbRevenue   Decimal?  // TOTAL REVENUE (F&B)
+
+    // ACTIVITY REVENUE Fields
+    hotelActivity    Decimal?  // HOTEL ACTIVITY
+    kikiMassage      Decimal?  // KIKI MASSAGE
+    wowExp           Decimal?  // WOW EXP
+
+    updatedAt        DateTime  @updatedAt
+      @@unique([date, category])
+  }
+
+  model Expense {
+    id        Int      @id @default(autoincrement())
+    date      DateTime
+    category  Category
+    amount    Decimal
+    note      String
+    updatedAt DateTime @updatedAt
+  }
