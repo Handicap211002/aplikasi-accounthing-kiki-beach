@@ -54,82 +54,82 @@ export default function TransactionPage() {
         }
     };
 
-const handleTambahTransaksi = async (data: any) => {
-    if (isSubmitting) return;
-    setIsSubmitting(true);
-    try {
-        if (!data.date || !data.category) {
-            toast.error('Tanggal dan kategori wajib diisi!');
-            return;
+    const handleTambahTransaksi = async (data: any) => {
+        if (isSubmitting) return;
+        setIsSubmitting(true);
+        try {
+            if (!data.date || !data.category) {
+                toast.error('Tanggal dan kategori wajib diisi!');
+                return;
+            }
+
+            const tableName = data.transactionType === 'PEMASUKAN' ? 'Transaction' : 'Expense';
+
+            // ✅ Cek apakah data sudah ada
+            const { data: existing, error: checkError } = await supabase
+                .from(tableName)
+                .select('id')
+                .eq('date', data.date)
+                .eq('category', data.category)
+                .maybeSingle();
+
+            if (checkError) {
+                console.error('Gagal cek data existing:', checkError);
+                toast.error('Terjadi kesalahan saat cek data duplikat');
+                return;
+            }
+
+            if (existing) {
+                toast.error(`Transaksi kategori "${data.category.replace(/_/g, ' ')}" sudah ada untuk tanggal ini.`);
+                return;
+            }
+
+            // ✅ Insert jika tidak ada duplikat
+            if (data.transactionType === 'PEMASUKAN') {
+                const { error } = await supabase.from('Transaction').insert({
+                    date: data.date,
+                    category: data.category,
+                    roomSold: data.roomSold || 0,
+                    extraBed: data.extraBed || 0,
+                    addPerson: data.addPerson || 0,
+                    otherRoom: data.otherRoom || 0,
+                    taxi: data.taxi || 0,
+                    boatRental: data.boatRental || 0,
+                    ticketBtmSg: data.ticketBtmSg || 0,
+                    beverage: data.beverage || 0,
+                    seaPantry: data.seaPantry || 0,
+                    breakfast: data.breakfast || 0,
+                    addBreakfast: data.addBreakfast || 0,
+                    otherFb: data.otherFb || 0,
+                    discount: data.discount || 0,
+                    hotelActivity: data.hotelActivity || 0,
+                    kikiMassage: data.kikiMassage || 0,
+                    wowExp: data.wowExp || 0,
+                    totalFbRevenue: data.totalFbRevenue || 0,
+                    roomRevenue: data.roomRevenue || 0,
+                    updatedAt: new Date().toISOString(),
+                });
+                if (error) throw error;
+            }
+            else {
+                const { error } = await supabase.from('Expense').insert({
+                    date: data.date,
+                    category: data.category,
+                    amount: data.amount,
+                    note: data.note,
+                    updatedAt: new Date().toISOString(),
+                });
+                if (error) throw error;
+            }
+
+            toast.success('Transaksi berhasil ditambahkan!');
+            setIsModalOpen(false);
+            fetchTransactions();
+        } catch (error) {
+            console.error('Gagal menambahkan transaksi:', error);
+            toast.error('Gagal menambahkan transaksi.');
         }
-
-        const tableName = data.transactionType === 'PEMASUKAN' ? 'Transaction' : 'Expense';
-
-        // ✅ Cek apakah data sudah ada
-        const { data: existing, error: checkError } = await supabase
-            .from(tableName)
-            .select('id')
-            .eq('date', data.date)
-            .eq('category', data.category)
-            .maybeSingle();
-
-        if (checkError) {
-            console.error('Gagal cek data existing:', checkError);
-            toast.error('Terjadi kesalahan saat cek data duplikat');
-            return;
-        }
-
-        if (existing) {
-            toast.error(`Transaksi kategori "${data.category.replace(/_/g, ' ')}" sudah ada untuk tanggal ini.`);
-            return;
-        }
-
-        // ✅ Insert jika tidak ada duplikat
-if (data.transactionType === 'PEMASUKAN') {
-    const { error } = await supabase.from('Transaction').insert({
-        date: data.date,
-        category: data.category,
-        roomSold: data.roomSold || 0,
-        extraBed: data.extraBed || 0,
-        addPerson: data.addPerson || 0,
-        otherRoom: data.otherRoom || 0,
-        taxi: data.taxi || 0,
-        boatRental: data.boatRental || 0,
-        ticketBtmSg: data.ticketBtmSg || 0,
-        beverage: data.beverage || 0,
-        seaPantry: data.seaPantry || 0,
-        breakfast: data.breakfast || 0,
-        addBreakfast: data.addBreakfast || 0,
-        otherFb: data.otherFb || 0,
-        discount: data.discount || 0,
-        hotelActivity: data.hotelActivity || 0,
-        kikiMassage: data.kikiMassage || 0,
-        wowExp: data.wowExp || 0,
-        totalFbRevenue: data.totalFbRevenue || 0,
-        roomRevenue: data.roomRevenue || 0,
-        updatedAt: new Date().toISOString(),
-    });
-    if (error) throw error;
-}
- else {
-            const { error } = await supabase.from('Expense').insert({
-                date: data.date,
-                category: data.category,
-                amount: data.amount,
-                note: data.note,
-                updatedAt: new Date().toISOString(),
-            });
-            if (error) throw error;
-        }
-
-        toast.success('Transaksi berhasil ditambahkan!');
-        setIsModalOpen(false);
-        fetchTransactions();
-    } catch (error) {
-        console.error('Gagal menambahkan transaksi:', error);
-        toast.error('Gagal menambahkan transaksi.');
-    }
-};
+    };
 
 
     const handleEdit = (tx: CombinedTransaction) => {
@@ -211,6 +211,30 @@ if (data.transactionType === 'PEMASUKAN') {
             console.error(error);
         }
     };
+    const calculateNominal = (tx: CombinedTransaction) => {
+        if (tx.category === 'ROOM_REVENUE') {
+            return (
+                (tx.roomRevenue || 0) +
+                (tx.extraBed || 0) +
+                (tx.addPerson || 0) +
+                (tx.otherRoom || 0) +
+                (tx.taxi || 0) +
+                (tx.boatRental || 0) +
+                (tx.ticketBtmSg || 0)
+            );
+        }
+        if (tx.category === 'ACTIVITY_REVENUE') {
+            return (
+                (tx.hotelActivity || 0) +
+                (tx.kikiMassage || 0) +
+                (tx.wowExp || 0)
+            );
+        }
+        if (tx.category === 'FB_REVENUE') {
+            return tx.totalFbRevenue || 0;
+        }
+        return 0;
+    };
 
 
     return (
@@ -245,7 +269,7 @@ if (data.transactionType === 'PEMASUKAN') {
                                             <td className="border px-4 py-2">{new Date(tx.date).toLocaleDateString()}</td>
                                             <td className="border px-4 py-2">{tx.category?.replace(/_/g, ' ') || '-'}</td>
                                             <td className="border px-4 py-2 text-right">
-                                                Rp {(tx as any).totalRevenue?.toLocaleString('id-ID') || '0'}
+                                                Rp {calculateNominal(tx).toLocaleString('id-ID')}
                                             </td>
                                             <td className="border px-4 py-2 text-center">
                                                 <div className="flex items-center justify-center gap-2">
