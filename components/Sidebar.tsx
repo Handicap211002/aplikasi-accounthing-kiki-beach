@@ -13,7 +13,7 @@ const Sidebar: FC<SidebarProps> = ({ onLogout, isOpen }) => {
   return (
     <aside
       className={`bg-blue-900 text-white h-full fixed md:static top-0 left-0 z-40 transition-all duration-300
-        ${isOpen ? 'w-64' : 'w-0 md:w-64'} 
+        ${isOpen ? 'w-45' : 'w-0 md:w-64'} 
         overflow-hidden md:overflow-visible flex flex-col`}
     >
       <div className="p-6 space-y-6">

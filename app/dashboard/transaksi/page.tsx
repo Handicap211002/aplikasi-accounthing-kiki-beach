@@ -238,11 +238,11 @@ export default function TransactionPage() {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
             <h1 className="text-2xl font-bold mb-4">Transaksi</h1>
             <button
                 onClick={() => setIsModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mb-4"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-2 rounded mb-4"
             >
                 + Tambah Transaksi
             </button>
@@ -254,13 +254,13 @@ export default function TransactionPage() {
                     <div>
                         <h2 className="text-xl font-semibold text-green-600 mb-2">📥 Pemasukan</h2>
                         <div className="overflow-x-auto">
-                            <table className="min-w-full table-fixed border text-sm">
+                            <table className="min-w-full border text-sm">
                                 <thead className="bg-gray-100">
                                     <tr>
-                                        <th className="border px-4 py-2 w-[140px]">Tanggal</th>
-                                        <th className="border px-4 py-2 w-[280px]">Kategori</th>
-                                        <th className="border px-4 py-2 w-[280px] text-right">Nominal Pemasukan</th>
-                                        <th className="border px-4 py-2 w-[100px] text-center">Opsi</th>
+                                        <th className="border px-4 py-2 whitespace-nowrap">Tanggal</th>
+                                        <th className="border px-4 py-2 whitespace-nowrap">Kategori</th>
+                                        <th className="border px-4 py-2 whitespace-nowrap text-right">Nominal</th>
+                                        <th className="border px-4 py-2 text-center">Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -291,13 +291,13 @@ export default function TransactionPage() {
                     <div>
                         <h2 className="text-xl font-semibold text-red-600 mb-2">📤 Pengeluaran</h2>
                         <div className="overflow-x-auto">
-                            <table className="min-w-full table-fixed border text-sm">
+                            <table className="min-w-full border text-sm">
                                 <thead className="bg-gray-100">
                                     <tr>
-                                        <th className="border px-4 py-2 w-[140px]">Tanggal</th>
-                                        <th className="border px-4 py-2 w-[280px]">Kategori</th>
-                                        <th className="border px-4 py-2 w-[280px] text-right">Nominal Pengeluaran</th>
-                                        <th className="border px-4 py-2 w-[100px] text-center">Opsi</th>
+                                        <th className="border px-4 py-2 whitespace-nowrap">Tanggal</th>
+                                        <th className="border px-4 py-2 whitespace-nowrap">Kategori</th>
+                                        <th className="border px-4 py-2 whitespace-nowrap text-right">Nominal</th>
+                                        <th className="border px-4 py-2 text-center">Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>

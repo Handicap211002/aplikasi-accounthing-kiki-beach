@@ -1,14 +1,20 @@
 // lib/prisma.ts
 import { PrismaClient } from '@prisma/client';
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+type G = typeof globalThis & { prisma?: PrismaClient; prismaDirect?: PrismaClient };
+const g = globalThis as G;
 
 export const prisma =
-  globalForPrisma.prisma ??
+  g.prisma ?? new PrismaClient({ log: ['error', 'warn'] });
+
+export const prismaDirect =
+  g.prismaDirect ??
   new PrismaClient({
-    log: ['query', 'error', 'warn'],
+    log: ['error', 'warn'],
+    datasources: { db: { url: process.env.DIRECT_URL! } }, // pakai DIRECT_URL (5432)
   });
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== 'production') {
+  g.prisma = prisma;
+  g.prismaDirect = prismaDirect;
+}

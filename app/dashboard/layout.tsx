@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import Sidebar from '../../components/Sidebar';
 import Navbar from '../../components/Navbar';
-import { Toaster } from 'react-hot-toast';
+import Footer from '../../components/Footer';
 
 export default function DashboardLayout({
   children,
@@ -44,7 +44,7 @@ export default function DashboardLayout({
       <Sidebar onLogout={handleLogout} isOpen={sidebarOpen} />
       <div
         className={`flex flex-col flex-1 transition-all duration-300 ${
-          sidebarOpen ? 'translate-x-64 md:translate-x-0' : 'translate-x-0'
+          sidebarOpen ? 'translate-x-45 md:translate-x-0' : 'translate-x-0'
         }`}
       >
         <Navbar
@@ -54,6 +54,7 @@ export default function DashboardLayout({
         <main className="p-4 md:p-6 flex-1 bg-gray-100 overflow-auto">
           {children}
         </main>
+        <Footer />
       </div>
     </div>
   );
