@@ -131,12 +131,12 @@ export default function LoginPage() {
       {showNameModal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm">
-            <h2 className="text-lg font-semibold mb-4 text-blue-900">Masukkan Nama Kasir</h2>
+            <h2 className="text-lg font-semibold mb-4 text-blue-900">Masukkan Nama Department</h2>
             <input
               type="text"
               value={newFullName}
               onChange={(e) => setNewFullName(e.target.value)}
-              placeholder="Contoh: Kasir Ayu"
+              placeholder="Contoh: (HK) PAK EMI"
               className="w-full mb-4 p-2 border border-blue-900 text-blue-900 rounded"
             />
             <button
