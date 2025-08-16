@@ -68,6 +68,7 @@ export default function EditTransaksiModal({
     // Hitung otomatis totalFbRevenue ketika kategori FB_REVENUE
     useEffect(() => {
         if (form.category === Category.FB_REVENUE) {
+            const foodAlacarte = Number(form.foodAlacarte) || 0;
             const beverage = Number(form.beverage) || 0;
             const seaPantry = Number(form.seaPantry) || 0;
             const breakfast = Number(form.breakfast) || 0;
@@ -75,7 +76,7 @@ export default function EditTransaksiModal({
             const otherFb = Number(form.otherFb) || 0;
             const discount = Number(form.discount) || 0;
 
-            const total = beverage + seaPantry + breakfast + addBreakfast + otherFb - discount;
+            const total = foodAlacarte + beverage + seaPantry + breakfast + addBreakfast + otherFb - discount;
 
             setForm((prev) => ({
                 ...prev,
@@ -83,6 +84,7 @@ export default function EditTransaksiModal({
             }));
         }
     }, [
+        form.foodAlacarte,
         form.beverage,
         form.seaPantry,
         form.breakfast,
@@ -111,6 +113,7 @@ export default function EditTransaksiModal({
             case Category.FB_REVENUE:
                 return (
                     <>
+                        <Field name="foodAlacarte" label="FoodAlacarte" value={form.foodAlacarte} onChange={handleChange} />
                         <Field name="beverage" label="Beverage" value={form.beverage} onChange={handleChange} />
                         <Field name="seaPantry" label="Sea Pantry" value={form.seaPantry} onChange={handleChange} />
                         <Field name="breakfast" label="Breakfast" value={form.breakfast} onChange={handleChange} />

@@ -22,6 +22,7 @@ export async function POST(req: Request) {
       ticketBtmSg,
 
       // FB_REVENUE fields
+      foodAlacarte,
       beverage,
       seaPantry,
       breakfast,
@@ -92,6 +93,7 @@ export async function POST(req: Request) {
       ...(ticketBtmSg !== undefined && { ticketBtmSg }),
 
       // FB_REVENUE
+      ...(foodAlacarte !== undefined && { foodAlacarte }),
       ...(beverage !== undefined && { beverage }),
       ...(seaPantry !== undefined && { seaPantry }),
       ...(breakfast !== undefined && { breakfast }),

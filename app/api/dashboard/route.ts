@@ -3,7 +3,7 @@ export const runtime = 'nodejs';
 export const revalidate = 0;
 
 import { NextResponse } from "next/server";
-import { prisma, prismaDirect } from "@/lib/prisma"; // ⬅️ pakai dua client
+import { prisma, prismaDirect } from "@/lib/prisma";
 import type { PrismaClient } from "@prisma/client";
 
 const OFFSET = 7 * 60 * 60 * 1000;
@@ -36,11 +36,12 @@ function rangeWIB(nowUtc: Date) {
 function incomeOfRow(tx: any): number {
   switch (tx.category) {
     case "ROOM_REVENUE":
-      return num(tx.roomRevenue)+num(tx.extraBed)+num(tx.addPerson)+num(tx.otherRoom)+num(tx.taxi)+num(tx.boatRental)+num(tx.ticketBtmSg);
+      return num(tx.roomRevenue)+num(tx.extraBed)+num(tx.otherRoom)+num(tx.taxi)+num(tx.boatRental)+num(tx.ticketBtmSg);
     case "FB_REVENUE": {
       const total = num(tx.totalFbRevenue);
       if (total > 0) return total;
-      return num(tx.beverage)+num(tx.seaPantry)+num(tx.breakfast)+num(tx.addBreakfast)+num(tx.otherFb)-num(tx.discount);
+      // ⬅️ ADD: masukkan foodAlacarte ke perhitungan manual
+      return num(tx.foodAlacarte) + num(tx.beverage) + num(tx.seaPantry) + num(tx.breakfast) + num(tx.addBreakfast) + num(tx.otherFb) - num(tx.discount);
     }
     case "ACTIVITY_REVENUE":
       return num(tx.hotelActivity)+num(tx.kikiMassage)+num(tx.wowExp);
@@ -50,16 +51,20 @@ function incomeOfRow(tx: any): number {
 const sumIncome = (arr: any[]) => arr.reduce((s, r) => s + incomeOfRow(r), 0);
 const sumExpense = (arr: any[]) => arr.reduce((s, r) => s + num(r.amount), 0);
 
-// ⬇️ helper ambil data dengan client yang diberikan
+// helper ambil data dengan client yang diberikan
 async function fetchAll(client: PrismaClient) {
   const [txAll, exAll] = await Promise.all([
     client.transaction.findMany({
       select: {
         date: true, category: true,
+        // ROOM
         roomRevenue: true, extraBed: true, addPerson: true, otherRoom: true,
         taxi: true, boatRental: true, ticketBtmSg: true,
+        // F&B
+        foodAlacarte: true,               // ⬅️ ADD
         beverage: true, seaPantry: true, breakfast: true, addBreakfast: true,
         otherFb: true, discount: true, totalFbRevenue: true,
+        // ACTIVITY
         hotelActivity: true, kikiMassage: true, wowExp: true,
       },
     }),
@@ -74,7 +79,7 @@ export async function GET() {
     const { yearNow, d0, d1, m0, m1, y0, y1 } = rangeWIB(now);
     const inRange = (d: Date, a: Date, b: Date) => d >= a && d <= b;
 
-    // ⬇️ coba pooler → kalau gagal, fallback ke direct
+    // coba pooler → kalau gagal, fallback ke direct
     let data;
     try {
       data = await fetchAll(prisma);

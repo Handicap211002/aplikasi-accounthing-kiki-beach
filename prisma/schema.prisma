@@ -30,6 +30,7 @@
     ticketBtmSg      Decimal?  // TICKET BTM-SG
 
     // F&B REVENUE Fields
+    foodAlacarte     Decimal?  
     beverage         Decimal?  // BEVERAGE
     seaPantry        Decimal?  // SEA PANTRY
     breakfast        Decimal?  // BREAKFAST

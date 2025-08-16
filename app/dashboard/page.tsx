@@ -14,7 +14,7 @@ type Monthly = { monthIndex: number; income: number; expense: number };
 type Yearly = { year: number; income: number; expense: number };
 
 const IDR = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 });
-const monthNames = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 const defaultCards: Cards = {
   incomeToday: 0, incomeMonth: 0, incomeYear: 0, incomeAll: 0,
   expenseToday: 0, expenseMonth: 0, expenseYear: 0, expenseAll: 0,
@@ -88,11 +88,11 @@ export default function DashboardPage() {
                 <BarChart data={monthly.map(m => ({ name: monthNames[m.monthIndex], income: m.income, expense: m.expense }))}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
-                  <YAxis tickFormatter={(v) => (v/1_000_000).toFixed(0) + " jt"} />
+                  <YAxis tickFormatter={(v) => (v / 1_000_000).toFixed(0) + " jt"} />
                   <Tooltip formatter={(v: any) => IDR.format(Number(v))} />
                   <Legend />
-                  <Bar dataKey="income" name="Pemasukan" />
-                  <Bar dataKey="expense" name="Pengeluaran" />
+                  <Bar dataKey="income" name="Pemasukan" fill="#22c55e" />  {/* Hijau */}
+                  <Bar dataKey="expense" name="Pengeluaran" fill="#ef4444" /> {/* Merah */}
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -104,11 +104,11 @@ export default function DashboardPage() {
                 <BarChart data={yearly.map(y => ({ name: String(y.year), income: y.income, expense: y.expense }))}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
-                  <YAxis tickFormatter={(v) => (v/1_000_000).toFixed(0) + " jt"} />
+                  <YAxis tickFormatter={(v) => (v / 1_000_000).toFixed(0) + " jt"} />
                   <Tooltip formatter={(v: any) => IDR.format(Number(v))} />
                   <Legend />
-                  <Bar dataKey="income" name="Pemasukan" />
-                  <Bar dataKey="expense" name="Pengeluaran" />
+                  <Bar dataKey="income" name="Pemasukan" fill="#22c55e" />  {/* Hijau */}
+                  <Bar dataKey="expense" name="Pengeluaran" fill="#ef4444" /> {/* Merah */}
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -175,7 +175,7 @@ function MiniCalendar() {
       </div>
       <div className="p-3">
         <div className="grid grid-cols-7 text-center text-[11px] uppercase opacity-90 mb-2">
-          {["Su","Mo","Tu","We","Th","Fr","Sa"].map(d => <div key={d}>{d}</div>)}
+          {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(d => <div key={d}>{d}</div>)}
         </div>
         <div className="grid grid-cols-7 gap-1">
           {cells.map((d, i) => {

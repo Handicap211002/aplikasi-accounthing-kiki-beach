@@ -29,6 +29,7 @@ export interface Transaction {
   ticketBtmSg?: number;
 
   // FB_REVENUE fields
+  foodAlacarte?: number; 
   beverage?: number;
   seaPantry?: number;
   breakfast?: number;
@@ -74,6 +75,7 @@ export type CombinedTransaction = {
   ticketBtmSg?: number;
 
   // FB_REVENUE
+  foodAlacarte?: number; 
   beverage?: number;
   seaPantry?: number;
   breakfast?: number;

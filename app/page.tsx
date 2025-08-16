@@ -76,7 +76,7 @@ export default function LoginPage() {
     });
 
     if (updateError) {
-      alert('Gagal menyimpan nama kasir');
+      alert('Gagal menyimpan nama department');
     } else {
       router.push('/dashboard');
     }

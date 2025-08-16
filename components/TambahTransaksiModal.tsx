@@ -27,7 +27,8 @@ export default function TambahTransaksiModal({ isOpen, onClose, onSubmit }: Tamb
   const [personPaxRoom, setPersonPaxRoom] = useState<number | ''>(''); // Tambahan ke-8
   const [roomRevenue, setRoomRevenue] = useState<number | ''>('');
 
-  // FB REVENUE
+  // FB REVENUEfoodAlacarte
+  const [foodAlacarte, setFoodAlacarte] = useState<number | ''>('');
   const [beverage, setBeverage] = useState<number | ''>('');
   const [seaPantry, setSeaPantry] = useState<number | ''>('');
   const [breakfast, setBreakfast] = useState<number | ''>('');
@@ -49,6 +50,7 @@ export default function TambahTransaksiModal({ isOpen, onClose, onSubmit }: Tamb
   useEffect(() => {
     if (transactionType === TransactionType.PEMASUKAN && category === Category.FB_REVENUE) {
       const total =
+        (Number(foodAlacarte) || 0) +
         (Number(beverage) || 0) +
         (Number(seaPantry) || 0) +
         (Number(breakfast) || 0) +
@@ -57,7 +59,7 @@ export default function TambahTransaksiModal({ isOpen, onClose, onSubmit }: Tamb
         (Number(discount) || 0);
       setTotalFbRevenue(total);
     }
-  }, [beverage, seaPantry, breakfast, addBreakfast, otherFb, discount, transactionType, category]);
+  }, [foodAlacarte, beverage, seaPantry, breakfast, addBreakfast, otherFb, discount, transactionType, category]);
   const handleSubmit = async () => {
     if (!date || !category || !transactionType) {
       setAlertType('warning');
@@ -104,6 +106,7 @@ export default function TambahTransaksiModal({ isOpen, onClose, onSubmit }: Tamb
         data.personPaxRoom = Number(personPaxRoom) || 0;
         data.roomRevenue = Number(roomRevenue) || 0;
       } else if (category === 'FB_REVENUE') {
+        data.foodAlacarte = Number(foodAlacarte) || 0;
         data.beverage = Number(beverage) || 0;
         data.seaPantry = Number(seaPantry) || 0;
         data.breakfast = Number(breakfast) || 0;
@@ -230,6 +233,7 @@ export default function TambahTransaksiModal({ isOpen, onClose, onSubmit }: Tamb
           {transactionType === TransactionType.PEMASUKAN && category === Category.FB_REVENUE && (
             <>
               <h3 className="font-semibold">Detail FB Revenue</h3>
+              <Input label="FoodAlacarte" value={foodAlacarte} onChange={setFoodAlacarte} />
               <Input label="Beverage" value={beverage} onChange={setBeverage} />
               <Input label="Sea Pantry" value={seaPantry} onChange={setSeaPantry} />
               <Input label="Breakfast" value={breakfast} onChange={setBreakfast} />
