@@ -213,7 +213,7 @@ export default function LaporanPage() {
   }, [room, fb, activity, start, end]);
 
   return (
-    <div className="p-4 sm:p-6 space-y-6 max-w-full min-w-0">
+    <div className="p-4 sm:p-6 space-y-6 max-w-full min-w-0 text-black">
       <header className="flex flex-col sm:flex-row sm:items-end gap-3">
         <div className="min-w-0">
           <div className="text-xl text-black font-semibold">Laporan</div>
@@ -308,7 +308,7 @@ export default function LaporanPage() {
         <div className="hidden sm:block">
           <TableWrapper>
             <table className="min-w-[1000px] md:min-w-full text-xs md:text-sm">
-              <thead className="sticky top-0 bg-slate-50 text-slate-700 z-10">
+              <thead className="sticky top-0 bg-slate-50 text-slate-900 z-10">
                 <tr className="border-b">
                   {[
                     "Date", "Room Sold", "Person/Pax", "Add Person", "Room Revenue", "Extra Bed",
@@ -322,7 +322,7 @@ export default function LaporanPage() {
                 {room.map(r => {
                   const sub = r.roomRevenue + r.extraBed + r.otherRoom + r.taxi + r.boatRental + r.ticketBtmSg;
                   return (
-                    <tr key={r.id} className="border-b odd:bg-white even:bg-slate-50/60">
+                    <tr key={r.id} className="border-b odd:bg-white even:bg-slate-50/60 text-slate-800">
                       <td className="px-2 md:px-3 py-2 whitespace-nowrap">{fmtDateID(r.date)}</td>
                       <td className="px-2 md:px-3 py-2 whitespace-nowrap">{r.roomSold}</td>
                       <td className="px-2 md:px-3 py-2 whitespace-nowrap">{r.personPaxRoom}</td>
@@ -342,7 +342,7 @@ export default function LaporanPage() {
                 )}
               </tbody>
               <tfoot className="bg-white">
-                <tr className="border-t font-semibold">
+                <tr className="border-t font-semibold text-slate-800">
                   <td className="px-2 md:px-3 py-2 whitespace-nowrap" colSpan={4}>TOTAL</td>
                   <td className="px-2 md:px-3 py-2 whitespace-nowrap">{IDR.format(totals.room.roomRevenue)}</td>
                   <td className="px-2 md:px-3 py-2 whitespace-nowrap">{IDR.format(totals.room.extraBed)}</td>
@@ -391,7 +391,7 @@ export default function LaporanPage() {
         <div className="hidden sm:block">
           <TableWrapper>
             <table className="min-w-[1000px] md:min-w-full text-xs md:text-sm">
-              <thead className="sticky top-0 bg-slate-50 text-slate-700 z-10">
+              <thead className="sticky top-0 bg-slate-50 text-slate-900 z-10">
                 <tr className="border-b">
                   {[
                     "Date", "Food Alacarte", "Beverage", "Sea Pantry", "Breakfast",
@@ -403,7 +403,7 @@ export default function LaporanPage() {
               </thead>
               <tbody>
                 {fb.map(r => (
-                  <tr key={r.id} className="border-b odd:bg-white even:bg-slate-50/60">
+                  <tr key={r.id} className="border-b odd:bg-white even:bg-slate-50/60 text-slate-800">
                     <td className="px-2 md:px-3 py-2 whitespace-nowrap">{fmtDateID(r.date)}</td>
                     <td className="px-2 md:px-3 py-2 whitespace-nowrap">{IDR.format(r.foodAlacarte)}</td>
                     <td className="px-2 md:px-3 py-2 whitespace-nowrap">{IDR.format(r.beverage)}</td>
@@ -420,7 +420,7 @@ export default function LaporanPage() {
                 )}
               </tbody>
               <tfoot className="bg-white">
-                <tr className="border-t font-semibold">
+                <tr className="border-t font-semibold text-slate-800">
                   <td className="px-2 md:px-3 py-2 whitespace-nowrap">TOTAL</td>
                   <td className="px-2 md:px-3 py-2 whitespace-nowrap">{IDR.format(totals.fb.foodAlacarte)}</td>
                   <td className="px-2 md:px-3 py-2 whitespace-nowrap">{IDR.format(totals.fb.beverage)}</td>
@@ -464,7 +464,7 @@ export default function LaporanPage() {
         <div className="hidden sm:block">
           <TableWrapper>
             <table className="min-w-[800px] md:min-w-full text-xs md:text-sm">
-              <thead className="sticky top-0 bg-slate-50 text-slate-700 z-10">
+              <thead className="sticky top-0 bg-slate-50 text-slate-900 z-10">
                 <tr className="border-b">
                   {["Date", "Hotel Activity", "Kiki Massage", "WOW Exp", "Subtotal"].map(h => (
                     <th key={h} className="px-2 md:px-3 py-2 text-left font-semibold whitespace-nowrap">{h}</th>
@@ -475,7 +475,7 @@ export default function LaporanPage() {
                 {activity.map(a => {
                   const sub = a.hotelActivity + a.kikiMassage + a.wowExp;
                   return (
-                    <tr key={a.id} className="border-b odd:bg-white even:bg-slate-50/60">
+                    <tr key={a.id} className="border-b odd:bg-white even:bg-slate-50/60 text-slate-800">
                       <td className="px-2 md:px-3 py-2 whitespace-nowrap">{fmtDateID(a.date)}</td>
                       <td className="px-2 md:px-3 py-2 whitespace-nowrap">{IDR.format(a.hotelActivity)}</td>
                       <td className="px-2 md:px-3 py-2 whitespace-nowrap">{IDR.format(a.kikiMassage)}</td>
@@ -489,7 +489,7 @@ export default function LaporanPage() {
                 )}
               </tbody>
               <tfoot className="bg-white">
-                <tr className="border-t font-semibold">
+                <tr className="border-t font-semibold text-slate-800">
                   <td className="px-2 md:px-3 py-2 whitespace-nowrap">TOTAL</td>
                   <td className="px-2 md:px-3 py-2 whitespace-nowrap">{IDR.format(totals.activity.hotelActivity)}</td>
                   <td className="px-2 md:px-3 py-2 whitespace-nowrap">{IDR.format(totals.activity.kikiMassage)}</td>
@@ -525,7 +525,7 @@ export default function LaporanPage() {
         <div className="hidden sm:block">
           <TableWrapper>
             <table className="min-w-[800px] md:min-w-full text-xs md:text-sm">
-              <thead className="sticky top-0 bg-slate-50 text-slate-700 z-10">
+              <thead className="sticky top-0 bg-slate-50 text-slate-900 z-10">
                 <tr className="border-b">
                   {["Date", "Category", "Note", "Amount"].map(h => (
                     <th key={h} className="px-2 md:px-3 py-2 text-left font-semibold whitespace-nowrap">{h}</th>
@@ -534,7 +534,7 @@ export default function LaporanPage() {
               </thead>
               <tbody>
                 {expense.map(e => (
-                  <tr key={e.id} className="border-b odd:bg-white even:bg-slate-50/60">
+                  <tr key={e.id} className="border-b odd:bg-white even:bg-slate-50/60 text-slate-800">
                     <td className="px-2 md:px-3 py-2 whitespace-nowrap">{fmtDateID(e.date)}</td>
                     <td className="px-2 md:px-3 py-2 whitespace-nowrap">{e.category}</td>
                     <td className="px-2 md:px-3 py-2 whitespace-normal break-words max-w-[360px]">{e.note}</td>
@@ -546,7 +546,7 @@ export default function LaporanPage() {
                 )}
               </tbody>
               <tfoot className="bg-white">
-                <tr className="border-t font-semibold">
+                <tr className="border-t font-semibold text-slate-800">
                   <td className="px-2 md:px-3 py-2 whitespace-nowrap" colSpan={3}>TOTAL</td>
                   <td className="px-2 md:px-3 py-2 whitespace-nowrap">{IDR.format(totals.expense.amount)}</td>
                 </tr>
