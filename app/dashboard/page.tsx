@@ -65,7 +65,7 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Dashboard <span className="text-slate-500 text-sm">Control panel</span></h1>
+      <h1 className="text-2xl text-black font-semibold">Dashboard <span className="text-slate-500 text-sm">Control panel</span></h1>
 
       {/* CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -81,7 +81,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* GRAFIK */}
-        <div className="xl:col-span-2 space-y-6">
+        <div className="xl:col-span-2 text-black space-y-6">
           <Section title="Grafik Data Pemasukan & Pengeluaran Per Bulan">
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
@@ -116,7 +116,7 @@ export default function DashboardPage() {
         </div>
 
         {/* KALENDER */}
-        <div className="xl:col-span-1">
+        <div className="xl:col-span-1 text-black">
           <Section title="Kalender">
             <MiniCalendar />
           </Section>

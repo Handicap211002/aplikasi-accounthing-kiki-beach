@@ -303,7 +303,7 @@ export default function TransactionPage() {
   const pengeluaran = useMemo(() => transactions.filter(tx => tx.isExpense), [transactions]);
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 sm:p-6">
+    <div className="min-h-screen p-4 sm:p-6">
       {/* Header */}
       <header className="flex flex-col sm:flex-row sm:items-center gap-3">
         <h1 className="text-xl sm:text-2xl font-bold min-w-0">Transaksi</h1>

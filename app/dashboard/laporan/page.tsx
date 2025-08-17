@@ -216,14 +216,14 @@ export default function LaporanPage() {
     <div className="p-4 sm:p-6 space-y-6 max-w-full min-w-0">
       <header className="flex flex-col sm:flex-row sm:items-end gap-3">
         <div className="min-w-0">
-          <div className="text-xl font-semibold">Laporan</div>
+          <div className="text-xl text-black font-semibold">Laporan</div>
           <div className="text-slate-500 text-sm">Filter periode & ekspor Excel</div>
         </div>
 
         <div className="w-full sm:w-auto sm:ml-auto min-w-0">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:justify-end min-w-0">
             {/* Bulan */}
-            <div className="flex items-center gap-2 basis-full sm:basis-auto min-w-0">
+            <div className="flex items-center gap-2 basis-full sm:basis-auto min-w-0 text-black">
               <label className="text-sm text-slate-600 shrink-0">Bulan</label>
               <input
                 type="month"
