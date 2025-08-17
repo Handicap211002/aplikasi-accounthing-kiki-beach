@@ -164,7 +164,7 @@ export default function TambahTransaksiModal({ isOpen, onClose, onSubmit }: Tamb
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 px-4">
-      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-xl bg-white p-4 shadow-lg sm:p-6">
+      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-xl bg-white p-4 shadow-lg sm:p-6 text-slate-800">
         <h2 className="text-xl font-semibold mb-4">Tambah Transaksi</h2>
         <div className="space-y-4">
           {alertMessage && (

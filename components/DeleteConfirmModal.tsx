@@ -17,7 +17,7 @@ export default function DeleteConfirmModal({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 px-4">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md text-slate-800">
         <h2 className="text-lg font-semibold mb-4">Konfirmasi Hapus</h2>
         <p className="mb-6">{message}</p>
         <div className="flex justify-end gap-2">
