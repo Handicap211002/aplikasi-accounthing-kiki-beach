@@ -88,13 +88,6 @@ export default function LoginPage() {
       style={{ backgroundImage: "url('/bg.png')" }}
     >
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm relative">
-        <button
-          onClick={() => router.push('/menu')}
-          className="absolute top-4 left-4 text-blue-900 hover:text-blue-700 flex items-center space-x-1"
-        >
-          <ArrowLeft size={18} />
-          <span>Kembali</span>
-        </button>
 
         <div className="text-center mb-1">
           <img src="/logo.png" alt="Kiki Beach Logo" className="mx-auto w-72" />
